@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سباق الأبطال | مسابقات تفاعلية لمراجعة المهارات الرقمية</title>
+<meta name="description" content="سباق الأبطال: برمجية تفاعلية تعمل بلا إنترنت لمراجعة مواد المهارات الرقمية والتقنية الرقمية، جاهزة بالأسئلة. إعداد المعلم عائض السهيمي.">
+
+<!-- ===== مشاركة على X وتلجرام (Open Graph / Twitter Card) ===== -->
+<!-- ملاحظة: أضف ملف صورة باسم og-image.png بجوار هذه الصفحة في المستودع لتظهر معاينة جميلة عند المشاركة -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="🏆 سباق الأبطال — مسابقات تفاعلية لمراجعة المهارات الرقمية">
+<meta property="og:description" content="برمجية تعمل بلا إنترنت وجاهزة بالأسئلة. حمّل نسخة مادتك وابدأ المنافسة في فصلك مباشرة.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:locale" content="ar_AR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🏆 سباق الأبطال — مسابقات تفاعلية لمراجعة المهارات الرقمية">
+<meta name="twitter:description" content="برمجية تعمل بلا إنترنت وجاهزة بالأسئلة. حمّل نسخة مادتك وابدأ المنافسة في فصلك مباشرة.">
+<meta name="twitter:image" content="og-image.png">
+
+<!-- أيقونة الموقع (إيموجي كأيقونة سريعة) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --gold:#F5B301; --gold-2:#FFD54F;
+    --ink:#1c1640; --ink-soft:#4a4172;
+    --bg:#f7f4ef; --card:#ffffff;
+    --primary:#16a34a; --primary-2:#4ade80;   /* ابتدائي */
+    --middle:#2563eb;  --middle-2:#38bdf8;     /* متوسط */
+    --secondary:#ea580c; --secondary-2:#f59e0b;/* ثانوي */
+    --enrich:#7c3aed;  --enrich-2:#ec4899;     /* إثراءات */
+    --line:#e9e2d6;
+    --shadow:0 10px 30px -12px rgba(28,22,64,.25);
+    font-family:'Tajawal',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink); line-height:1.7;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(245,179,1,.10), transparent 38%),
+      radial-gradient(circle at 88% 4%, rgba(124,58,237,.10), transparent 40%);
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Changa',sans-serif}
+
+  /* ============ شريط تنبيه: الكمبيوتر فقط ============ */
+  .alert-bar{
+    background:linear-gradient(90deg,#3b1f5e,#5b2a8c);
+    color:#fff; text-align:center; padding:.7rem 1rem; font-weight:700;
+    font-size:clamp(.85rem,2.6vw,1rem); position:sticky; top:0; z-index:50;
+    box-shadow:0 4px 14px rgba(0,0,0,.18); border-bottom:2px solid var(--gold);
+  }
+  .alert-bar span{display:inline-block}
+
+  /* ============ الهيرو ============ */
+  .hero{
+    position:relative; padding:clamp(2.5rem,7vw,4.5rem) 1.2rem clamp(2rem,6vw,3.5rem);
+    text-align:center; color:#fff; overflow:hidden;
+    background:
+      radial-gradient(circle at 50% -20%, #4b2a86 0%, transparent 60%),
+      linear-gradient(160deg,#241a52 0%,#3a2470 45%,#1c1640 100%);
+  }
+  .hero::before{ /* قصاصات/نجوم خفيفة */
+    content:""; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, #FFD54F, transparent),
+      radial-gradient(2px 2px at 70% 20%, #ec4899, transparent),
+      radial-gradient(2px 2px at 85% 60%, #38bdf8, transparent),
+      radial-gradient(2px 2px at 35% 75%, #4ade80, transparent),
+      radial-gradient(2px 2px at 60% 85%, #FFD54F, transparent);
+  }
+  .hero>*{position:relative;z-index:1}
+  .trophy{font-size:clamp(3rem,11vw,5rem);filter:drop-shadow(0 6px 14px rgba(0,0,0,.4));animation:pop .8s cubic-bezier(.2,.9,.3,1.4) both}
+  .hero h1{
+    font-weight:800; font-size:clamp(2rem,8vw,3.6rem); margin:.2rem 0 .3rem;
+    background:linear-gradient(90deg,var(--gold-2),#fff,var(--gold));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    letter-spacing:-.5px;
+  }
+  .hero .tagline{font-size:clamp(1rem,4vw,1.4rem);color:#e7defb;font-weight:500;margin-bottom:1.3rem}
+  .hero .desc{max-width:760px;margin:0 auto 1.6rem;color:#d9d0f0;font-size:clamp(.95rem,3.3vw,1.12rem)}
+
+  /* المزايا */
+  .features{max-width:880px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.7rem;text-align:right}
+  .feat{
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
+    border-radius:14px; padding:.8rem 1rem; display:flex; gap:.6rem; align-items:center;
+    backdrop-filter:blur(6px); font-size:clamp(.85rem,3vw,1rem); color:#f3effb; font-weight:500;
+  }
+  .feat .ic{font-size:1.4rem;flex-shrink:0}
+  .feat.extra{display:none}
+  .features.show-all .feat.extra{display:flex}
+  .more-btn{
+    margin:1rem auto 0; display:inline-flex; gap:.4rem; align-items:center; cursor:pointer;
+    background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.25);
+    border-radius:999px; padding:.5rem 1.3rem; font-family:'Tajawal'; font-weight:700; font-size:.95rem;
+    transition:.25s;
+  }
+  .more-btn:hover{background:rgba(255,255,255,.22)}
+
+  /* نسبة المصمم + روابط التواصل */
+  .author{margin-top:1.8rem;font-weight:700;color:#fff;font-size:clamp(1rem,3.6vw,1.2rem)}
+  .author .name{color:var(--gold-2)}
+  .socials{margin-top:.9rem;display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
+  .social{
+    display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.2rem;border-radius:999px;
+    font-weight:700;text-decoration:none;font-size:.95rem;transition:transform .2s,box-shadow .2s;color:#fff;
+  }
+  .social:hover{transform:translateY(-3px)}
+  .social.x{background:#000;border:1px solid #333}
+  .social.tg{background:#229ED9}
+  .social svg{width:18px;height:18px;fill:currentColor}
+
+  /* ============ المحتوى ============ */
+  .wrap{max-width:1080px;margin:0 auto;padding:clamp(2rem,6vw,3.2rem) 1.1rem 1rem}
+
+  /* كيفية التحميل */
+  .howto{
+    background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.3rem 1.4rem;
+    margin-bottom:2.4rem;box-shadow:var(--shadow);display:grid;gap:.7rem
+  }
+  .howto h3{font-size:1.2rem;color:var(--ink);display:flex;align-items:center;gap:.5rem}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin-top:.3rem}
+  .step{display:flex;gap:.6rem;align-items:flex-start;font-size:.95rem;color:var(--ink-soft)}
+  .step .n{background:var(--gold);color:#3a2a00;font-weight:800;font-family:'Changa';width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+
+  /* عنوان قسم المرحلة */
+  .stage{margin-bottom:2.6rem}
+  .stage-head{display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem}
+  .stage-head .badge{
+    font-family:'Changa';font-weight:800;font-size:clamp(1.2rem,4.5vw,1.7rem);color:#fff;
+    padding:.35rem 1.1rem;border-radius:14px;box-shadow:var(--shadow)
+  }
+  .stage-head .count{color:var(--ink-soft);font-weight:700;font-size:.95rem}
+  .stage-line{flex:1;height:3px;border-radius:3px;opacity:.4}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1.1rem}
+
+  /* بطاقة المادة */
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;
+    opacity:0;transform:translateY(18px);animation:rise .6s ease forwards
+  }
+  .card .top{height:7px}
+  .card .body{padding:1.1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.85rem;flex:1}
+  .card .subj{display:flex;align-items:center;gap:.6rem}
+  .card .subj .emoji{font-size:1.7rem}
+  .card .subj h3{font-size:1.18rem;line-height:1.3;color:var(--ink)}
+  .card .subj .grade{font-size:.85rem;color:var(--ink-soft);font-weight:500}
+
+  /* أزرار الفصلين */
+  .terms{display:flex;background:#f1ece2;border-radius:12px;padding:4px;gap:4px}
+  .term-btn{
+    flex:1;border:none;background:transparent;cursor:pointer;font-family:'Tajawal';font-weight:700;
+    font-size:.9rem;color:var(--ink-soft);padding:.5rem;border-radius:9px;transition:.2s
+  }
+  .term-btn.active{background:#fff;color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.1)}
+
+  .term-panel{display:none;flex-direction:column;gap:.6rem}
+  .term-panel.active{display:flex}
+
+  .dl{
+    display:flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;
+    padding:.7rem;border-radius:12px;font-weight:700;font-size:.95rem;transition:transform .18s,filter .18s;color:#fff
+  }
+  .dl:hover{transform:translateY(-2px);filter:brightness(1.05)}
+  .dl.m{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
+  .dl.f{background:linear-gradient(135deg,#db2777,#be185d)}
+  .dl.single{background:linear-gradient(135deg,#7c3aed,#6d28d9)}
+
+  .soon{
+    text-align:center;padding:.9rem;border:2px dashed #d8cfc0;border-radius:12px;
+    color:#9a8f7a;font-weight:700;background:#faf6ee
+  }
+
+  footer{
+    text-align:center;padding:2.5rem 1.2rem;margin-top:1.5rem;color:var(--ink-soft);
+    border-top:1px solid var(--line);font-size:.92rem
+  }
+  .share{
+    margin:0 auto 1.2rem;display:inline-flex;gap:.5rem;align-items:center;cursor:pointer;
+    background:var(--ink);color:#fff;border:none;border-radius:999px;padding:.7rem 1.5rem;
+    font-family:'Tajawal';font-weight:700;font-size:.95rem;transition:.2s
+  }
+  .share:hover{background:#2c2356}
+  footer .foot-socials{display:flex;gap:.6rem;justify-content:center;margin:1rem 0}
+  footer .foot-socials a{color:var(--ink);font-weight:700;text-decoration:none}
+
+  @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="alert-bar"><span>💻 ملاحظة مهمة: هذه الملفات مصمّمة للعمل على جهاز الكمبيوتر وتُعرض على شاشة العرض داخل الفصل، ولا تعمل على الجوال.</span></div>
+
+<header class="hero">
+  <div class="trophy">🏆</div>
+  <h1>سباق الأبطال</h1>
+  <p class="tagline">مسابقات تفاعلية لمراجعة مواد المهارات الرقمية</p>
+  <p class="desc">«سباق الأبطال» برمجية تفاعلية تحوّل مراجعة الدرس إلى منافسة حماسية داخل الفصل. تُعرض على شاشة العرض (البروجكتر)، وتعمل بالكامل دون إنترنت، وتأتيك جاهزة بأسئلة المنهج معدّة مسبقًا — فما عليك إلا إدخال اسمك واسم مدرستك وأسماء طلابك، ثم تبدأ المنافسة مباشرة.</p>
+
+  <div class="features" id="features">
+    <div class="feat"><span class="ic">🚫</span><span>تعمل بلا إنترنت بالكامل — لا تحتاج اتصالًا أثناء الحصة</span></div>
+    <div class="feat"><span class="ic">📚</span><span>جاهزة بالأسئلة — بنك المنهج مُعدّ مسبقًا دون عناء إعداد</span></div>
+    <div class="feat"><span class="ic">📋</span><span>لصق أسماء الطلاب دفعة واحدة — إدخال الفصل كامل في ثوانٍ</span></div>
+    <div class="feat"><span class="ic">🎰</span><span>اختيار عشوائي مشوّق للطلاب بأسلوب «آلة الحظ»</span></div>
+    <div class="feat"><span class="ic">⭐</span><span>نظام نقاط متدرّج حسب الإجابة (٣ / ٢ / ١)</span></div>
+    <div class="feat"><span class="ic">🏅</span><span>شاشة تتويج احتفالية وقائمة شرف بالمراكز الأولى</span></div>
+    <div class="feat extra"><span class="ic">📊</span><span>لوحة نتائج حية تعرض نقاط كل طالب وسجل إجاباته</span></div>
+    <div class="feat extra"><span class="ic">⏱️</span><span>مؤقّت زمني لكل سؤال (اختياري)</span></div>
+    <div class="feat extra"><span class="ic">🔊</span><span>مؤثرات صوتية وتشويق تفاعلي</span></div>
+    <div class="feat extra"><span class="ic">✏️</span><span>تعديل أي سؤال لتصحيح الأخطاء مع إمكانية استعادة الأصل</span></div>
+    <div class="feat extra"><span class="ic">💾</span><span>حفظ الجلسة واستعادتها تلقائيًا عند إعادة الفتح</span></div>
+  </div>
+  <button class="more-btn" id="moreBtn" onclick="toggleFeatures()">➕ المزيد من المزايا</button>
+
+  <p class="author">فكرة وتصميم المعلم: <span class="name">عائض السهيمي</span></p>
+  <div class="socials">
+    <a class="social x" href="https://x.com/Ayed_Edu" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      منصة X
+    </a>
+    <a class="social tg" href="https://t.me/ayed_digit" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+      قناة تلجرام
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="howto">
+    <h3>📥 كيف أحصل على نسخة مادتي؟</h3>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><span>اختر مادتك وصفّك من الأقسام أدناه.</span></div>
+      <div class="step"><span class="n">2</span><span>اضغط «نسخة المعلمين» أو «نسخة المعلمات» حسب احتياجك.</span></div>
+      <div class="step"><span class="n">3</span><span>حمّل الملف على جهاز الكمبيوتر ثم افتحه بالمتصفح.</span></div>
+      <div class="step"><span class="n">4</span><span>أدخل اسمك واسم مدرستك وأسماء طلابك، وابدأ المسابقة.</span></div>
+    </div>
+  </section>
+
+  <div id="stages"></div>
+
+</main>
+
+<footer>
+  <button class="share" onclick="copyLink(this)">🔗 نسخ رابط الصفحة</button>
+  <div class="foot-socials">
+    <a href="https://x.com/Ayed_Edu" target="_blank" rel="noopener">منصة X</a>
+    <span>•</span>
+    <a href="https://t.me/ayed_digit" target="_blank" rel="noopener">قناة تلجرام</a>
+  </div>
+  <p>فكرة وتصميم المعلم عائض السهيمي — سباق الأبطال 🏆</p>
+</footer>
+
+<script>
+  // رابط التحميل المباشر من Google Drive
+  const DRIVE = id => `https://drive.google.com/uc?export=download&id=${id}`;
+
+  /* ملفات الفصل الأول غير متوفرة بعد (term1=null) — عند توفّرها أضف المعرّفات هنا فقط */
+  const STAGES = [
+    {
+      title:'المرحلة الابتدائية', color:'var(--primary)', color2:'var(--primary-2)',
+      subjects:[
+        { emoji:'💻', name:'مهارات رقمية', grade:'الصف الرابع الابتدائي',
+          term1:null, term2:{ m:'1Bdt4LJ-OYbyErYYhofWdx04TyygIWm23', f:'1DhYBScbqsNltd5R6mSrhY-r-bzK1Jhjg' } },
+        { emoji:'💻', name:'مهارات رقمية', grade:'الصف الخامس الابتدائي',
+          term1:null, term2:{ m:'1en1MBpv6Ug9pnIhiL4AYKoze5U7iSePi', f:'1Rla6asVBZDnie6KqXIcVh1Se_a9z80v_' } },
+        { emoji:'💻', name:'مهارات رقمية', grade:'الصف السادس الابتدائي',
+          term1:null, term2:{ m:'1JaqQ_NsOzwxZE5Ysew5pUr6OpYQMXq-Y', f:'1AqB0EIzGu6VS6yD3EX-a2Ym4KU9mWpm0' } },
+      ]
+    },
+    {
+      title:'المرحلة المتوسطة', color:'var(--middle)', color2:'var(--middle-2)',
+      subjects:[
+        { emoji:'🖥️', name:'مهارات رقمية', grade:'الصف الأول المتوسط',
+          term1:null, term2:{ m:'1wnnv32L_QdaV0VC4qt_bwAFSGb9gh8PC', f:'1rq3_JLu3_QoKsWhDh1vqKIbVdt5Em0m0' } },
+        { emoji:'🖥️', name:'مهارات رقمية', grade:'الصف الثاني المتوسط',
+          term1:null, term2:{ m:'1KbnECZxLN9Wq_r9x2qqoZDqBNqBHDk3F', f:'1tAbQaUTkc-lNXUqgKd8HpOCvF0B-GDhZ' } },
+        { emoji:'🖥️', name:'مهارات رقمية', grade:'الصف الثالث المتوسط',
+          term1:null, term2:{ m:'1dITIELZ6pdOYTyN2iP37agWCPbLSIRnE', f:'1GEI69VIGg_J8OqqWWiX10RJxlENZFkLL' } },
+      ]
+    },
+    {
+      title:'المرحلة الثانوية', color:'var(--secondary)', color2:'var(--secondary-2)',
+      subjects:[
+        { emoji:'⚙️', name:'تقنية رقمية 1', grade:'الأول الثانوي',
+          term1:null, term2:{ m:'1ZlatZqZZ2d6z66n1y6Zm78Ys6uXYP5Ly', f:'1aEhL7KZ8LGObLrI9Rn2BjmVP2y9OQxCM' } },
+        { emoji:'⚙️', name:'تقنية رقمية 2', grade:'الثاني الثانوي',
+          term1:null, term2:{ m:'1bLpGLvsrBJOWJuGZvdzLMjmh1STYc3Jc', f:'1HE3U-JmUaYA7tsHox7DQtmL_xtxhe8xT' } },
+      ]
+    },
+    {
+      title:'إثراءات — الميكروبت', color:'var(--enrich)', color2:'var(--enrich-2)', enrichment:true,
+      subjects:[
+        { emoji:'🤖', name:'أساسيات برمجة الميكروبت', grade:'إثراء تعليمي',
+          single:'1NqhLVvu7TyYc0irNTy6VwUBJ4LUejwaW' },
+        { emoji:'📝', name:'اختبار الميكروبت النهائي', grade:'إثراء تعليمي',
+          single:'1oXzjRESIwVHTBRxMVOBIAtFWQnDwbIkc' },
+      ]
+    },
+  ];
+
+  function buildCard(s, color, color2, delay, enrichment){
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = delay + 'ms';
+
+    // المحتوى حسب النوع
+    let panels;
+    if (enrichment){
+      panels = `<div class="term-panel active"><a class="dl single" href="${DRIVE(s.single)}" target="_blank" rel="noopener">⬇️ تحميل الملف</a></div>`;
+    } else {
+      const t2 = `
+        <a class="dl m" href="${DRIVE(s.term2.m)}" target="_blank" rel="noopener">👨‍🏫 نسخة المعلمين</a>
+        <a class="dl f" href="${DRIVE(s.term2.f)}" target="_blank" rel="noopener">👩‍🏫 نسخة المعلمات</a>`;
+      const t1 = s.term1
+        ? `<a class="dl m" href="${DRIVE(s.term1.m)}" target="_blank" rel="noopener">👨‍🏫 نسخة المعلمين</a>
+           <a class="dl f" href="${DRIVE(s.term1.f)}" target="_blank" rel="noopener">👩‍🏫 نسخة المعلمات</a>`
+        : `<div class="soon">🚧 سيتم إضافته لاحقًا</div>`;
+      panels = `
+        <div class="terms">
+          <button class="term-btn" data-t="1">الفصل الأول</button>
+          <button class="term-btn active" data-t="2">الفصل الثاني</button>
+        </div>
+        <div class="term-panel" data-panel="1">${t1}</div>
+        <div class="term-panel active" data-panel="2">${t2}</div>`;
+    }
+
+    card.innerHTML = `
+      <div class="top" style="background:linear-gradient(90deg,${color},${color2})"></div>
+      <div class="body">
+        <div class="subj">
+          <span class="emoji">${s.emoji}</span>
+          <div><h3>${s.name}</h3><div class="grade">${s.grade}</div></div>
+        </div>
+        ${panels}
+      </div>`;
+
+    // تبديل الفصلين
+    if(!enrichment){
+      card.querySelectorAll('.term-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const t = btn.dataset.t;
+          card.querySelectorAll('.term-btn').forEach(b=>b.classList.toggle('active', b===btn));
+          card.querySelectorAll('.term-panel').forEach(p=>p.classList.toggle('active', p.dataset.panel===t));
+        });
+      });
+    }
+    return card;
+  }
+
+  function render(){
+    const root = document.getElementById('stages');
+    let delay = 0;
+    STAGES.forEach(stage=>{
+      const sec = document.createElement('section');
+      sec.className = 'stage';
+      sec.innerHTML = `
+        <div class="stage-head">
+          <span class="badge" style="background:linear-gradient(135deg,${stage.color},${stage.color2})">${stage.title}</span>
+          <span class="count">${stage.subjects.length} مواد</span>
+          <span class="stage-line" style="background:linear-gradient(90deg,${stage.color},transparent)"></span>
+        </div>`;
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+      stage.subjects.forEach(s=>{
+        grid.appendChild(buildCard(s, stage.color, stage.color2, delay, stage.enrichment));
+        delay += 80;
+      });
+      sec.appendChild(grid);
+      root.appendChild(sec);
+    });
+  }
+
+  function toggleFeatures(){
+    const f = document.getElementById('features');
+    const btn = document.getElementById('moreBtn');
+    const open = f.classList.toggle('show-all');
+    btn.textContent = open ? '➖ عرض أقل' : '➕ المزيد من المزايا';
+  }
+
+  function copyLink(btn){
+    const url = window.location.href;
+    navigator.clipboard?.writeText(url).then(()=>{
+      const t = btn.textContent; btn.textContent = '✅ تم نسخ الرابط';
+      setTimeout(()=>btn.textContent=t,1800);
+    }).catch(()=>{ window.prompt('انسخ الرابط:', url); });
+  }
+
+  render();
+</script>
+</body>
+</html>
